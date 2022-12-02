@@ -24,18 +24,14 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void updateUser(User user) {
-        entityManager.createQuery("update User u set u.name=?1, u.age=?2  where u.id=?3")
-                .setParameter(1, user.getName())
-                .setParameter(2, user.getAge())
-                .setParameter(3, user.getId())
-                .executeUpdate();
+        User updatedUser = entityManager.find(User.class, user.getId());
+        updatedUser.setName(user.getName());
+        updatedUser.setAge(user.getAge());
     }
 
     @Override
     public void deleteUser(long id) {
-        entityManager.createQuery("delete from User u where u.id=?1")
-                .setParameter(1, id)
-                .executeUpdate();
+        entityManager.remove(getById(id));
     }
 
     @Override
